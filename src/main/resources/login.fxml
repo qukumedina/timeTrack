@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox alignment="CENTER" spacing="10" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.LoginController">
+    <Label text="Login" />
+    <TextField fx:id="usernameField" promptText="Username" />
+    <PasswordField fx:id="passwordField" promptText="Password" />
+    <Button text="Login" onAction="#login" />
+    <Button text="Register" onAction="#goToRegister" />
+    <Button text="Go to Manager Screen" onAction="#goToManagerScreen"/>
+    <Button fx:id="managerScreenButton" text="Go to Manager Screen" onAction="#goToManagerScreen" visible="false"/>
+
+
+</VBox>

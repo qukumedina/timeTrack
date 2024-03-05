@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.fxml.FXMLLoader?>
+<?import java.lang.String?>
+
+<VBox spacing="10" alignment="CENTER" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.HolidayRequestController">
+    <Label text="Request Holidays"/>
+    <Label fx:id="availableHolidaysLabel" text="Available Holidays: "/>
+    <DatePicker fx:id="startDatePicker" promptText="Start Date"/>
+    <DatePicker fx:id="endDatePicker" promptText="End Date"/>
+    <Button text="Request Holiday" onAction="#handleHolidayRequest"/>
+</VBox>

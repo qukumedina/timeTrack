@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ManagerController">
+    <Label fx:id="holidaysLabel"/>
+
+    <Label text="Manager Dashboard" />
+
+    <!-- Buttons for other managerial functionalities -->
+    <Button text="Approve Registrations" onAction="#handleApproveRegistrations" />
+    <Button text="Approve Holiday Requests" onAction="#handleApproveHolidayRequests" />
+
+    <!-- TableView for managing tasks -->
+    <Label text="Task Management" />
+    <TableView fx:id="taskTableView">
+        <TableColumn fx:id="taskIdColumn" text="Task ID" />
+        <TableColumn fx:id="taskDescriptionColumn" text="Description" />
+        <TableColumn fx:id="timeSpentColumn" text="Time Spent" />
+
+    </TableView>
+    <ComboBox fx:id="employeeComboBox" /> <!-- Dropdown to select an employee -->
+    <TextField fx:id="taskDescriptionField" /> <!-- Field to enter task description -->
+    <TextField fx:id="taskTimeField" /> <!-- Field to enter expected time for task -->
+    <Button text="Assign Task" onAction="#handleAssignTask" /> <!-- Button to assign task -->
+
+    <Label text="Pending Registrations" />
+    <ListView fx:id="pendingRegistrationsListView" />
+    <Button text="Approve" onAction="#approveSelectedRegistration"/>
+    <Button text="Reject" onAction="#rejectSelectedRegistration"/>
+    <!-- Part of ManagerScreen.fxml -->
+    <ListView fx:id="holidayRequestListView"/>
+    <Button text="Approve Request" onAction="#approveSelectedRequest"/>
+    <Button text="Go to Task Tracking" onAction="#goToTaskTracking"/>
+
+
+    <Button text="Edit Selected Task" onAction="#handleEditTask"/>
+</VBox>
