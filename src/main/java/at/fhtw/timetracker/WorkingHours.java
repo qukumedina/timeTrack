@@ -118,7 +118,7 @@ public class WorkingHours {
         String formattedString = date.format(formatter);
         return formattedString + "," + startTime + "," + endTime + "," + hoursDone;
     }
-    // Method to calculate available holidays*/
+
 
 }
 

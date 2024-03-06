@@ -13,8 +13,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 public class TCPServer implements Runnable{
     private static final String USERS_CSV_FILE = "users.csv"; // Path to your users CSV file
-    private static final String TASKS_CSV_FILE = "tasks.csv"; // Path to your users CSV file
-    private static final String TrackTime_CSV_FILE = "workinghrs.csv"; // Path to your users CSV file
+    private static final String TASKS_CSV_FILE = "tasks.csv"; // Path to your tasks CSV file
+    private static final String TrackTime_CSV_FILE = "workinghrs.csv"; // Path to your working hours CSV file
 
     private static final String HOLIDAY_REQUESTS_CSV_FILE = "holidayRequests.csv"; // Path to your holiday requests CSV file
 

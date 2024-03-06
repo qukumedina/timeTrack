@@ -36,7 +36,7 @@ public class LoginController {
     private static final String USERS_CSV_FILE = "users.csv";
     @FXML
     private Button managerScreenButton;
-    private User currentUser; // Assume this is set to the currently logged-in user
+    private User currentUser; // set to the currently logged-in user
 
     @FXML
     /**

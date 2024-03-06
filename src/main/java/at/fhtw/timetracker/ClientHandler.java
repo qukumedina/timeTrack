@@ -107,7 +107,7 @@ public class ClientHandler implements Runnable{
                 role = Role.MANAGER;
             }
 
-            // Add logic to register the user with the specified role
+            // register the user with the specified role
             User newUser = new User(CsvUtil.generateUserId(), username, password, role, 40); // Set the role
             userList.add(newUser);
             //CsvUtil.writeCsv(Arrays.asList(userList.toArray()), "users.csv");
@@ -253,11 +253,6 @@ public class ClientHandler implements Runnable{
      * @return  A message indicating whether the screen can be loaded or access is denied
      */
     private static String processLoadTaskTrackingScreen() {
-        // Add your logic here to determine if the task tracking screen can be loaded
-        // For example, check user roles, permissions, etc.
-        // For simplicity, this example assumes all users can access the task tracking screen
-
-        // Example logic: Check if the user has the necessary role (this is a placeholder)
         boolean userHasAccess = true; // Placeholder for actual access check
 
         if (userHasAccess) {

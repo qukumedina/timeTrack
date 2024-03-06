@@ -20,7 +20,6 @@ public class ServerShutdowner {
      */
     public static void main(String[] args) {
 
-        // Here you can include the TCP client logic after the JavaFX application is launched
         String serverName = "localhost"; // Server name or IP
         int port = 6789; // Port number
 

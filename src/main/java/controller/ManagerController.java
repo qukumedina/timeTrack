@@ -44,7 +44,7 @@ public class ManagerController {
     private TextField taskTimeField;
 
     @FXML
-    private TableColumn<Task, Integer> taskIdColumn; // Assuming Task has an Integer ID
+    private TableColumn<Task, Integer> taskIdColumn;
     @FXML
     private TableColumn<Task, String> taskDescriptionColumn;
     // Add other columns as necessary
@@ -305,10 +305,6 @@ public class ManagerController {
 */
 
 
-
-// Other methods and logic...
-
-
     /**
      * Generates a unique task ID.
      * @return The generated task ID.
@@ -316,7 +312,7 @@ public class ManagerController {
     private int generateTaskId() {
         List<Task> tasks = CsvUtil.readCsv("tasks.csv", Task.class);
         int maxId = tasks.stream()
-                .mapToInt(Task::getTaskId) // Assuming Task has a getTaskId method
+                .mapToInt(Task::getTaskId)
                 .max()
                 .orElse(0); // Start from 0 if there are no tasks
 
@@ -327,7 +323,6 @@ public class ManagerController {
      * Sets up the columns for the task table.
      */
     private void setupTaskTableColumns() {
-        // Assuming the Task class has 'id' and 'description' properties
         taskIdColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         taskDescriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
         timeSpentColumn.setCellValueFactory(new PropertyValueFactory<>("timeSpent")); // Setup for the new column
@@ -622,7 +617,6 @@ private void approveSelectedRegistration() {
      */
     @FXML
     private void handleApproveHolidayRequests() {
-        // TODO
         System.out.println("Approving Holiday Requests");
     }
 }

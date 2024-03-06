@@ -1,4 +1,3 @@
-// LoginController.java
 package controller;
 
 import at.fhtw.timetracker.TCPClient;
