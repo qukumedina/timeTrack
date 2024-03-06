@@ -187,7 +187,7 @@ public class CsvUtil {
      * @param line  The CSV-formatted line
      * @param dataClass The class of the object to create
      * @param <T>   The type of objects to create
-     * @return  An instance of the Track class created from the CSV line
+     * @return  An instance of the WorkingHours class created from the CSV line
      */
     public static <T> T createTrackInstance(String line, Class<T> dataClass) {
         String[] fields = line.split(COMMA_DELIMITER);
@@ -212,8 +212,6 @@ public class CsvUtil {
     }
 
     // Create an instance of the data class based on the CSV line
-    // Assumes lastAssignedUserId is a static member of CsvUtil and managed there.
-
     // Adjusted method to create a User instance without needing an ID from CSV
     /**
      * Creates an instance of the User class based on the CSV-formatted line
@@ -230,9 +228,9 @@ public class CsvUtil {
                 // Adjusted to the new format: username, password, role
                 String username = fields[0].trim();
                 String password = fields[1].trim();
-                Role role = Role.valueOf(fields[2].trim()); // Assuming role is the third field
+                Role role = Role.valueOf(fields[2].trim());
 
-                // Create a new User instance with auto-generated ID
+                // Create a new User instance
                 T data = dataClass.getDeclaredConstructor(String.class, String.class, Role.class)
                         .newInstance(username, password, role);
 
