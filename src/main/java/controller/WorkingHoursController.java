@@ -1,4 +1,3 @@
-// LoginController.java
 package controller;
 
 import com.example.time.TCPClient;
@@ -20,6 +19,10 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
+/**
+ * Controller class for tracking working hours.
+ *  * Allows users to track their working hours for a specific date
+ */
 public class WorkingHoursController {
 
     @FXML
@@ -29,7 +32,10 @@ public class WorkingHoursController {
     @FXML
     private TextField endTimeField;
 
-
+    /**
+     * Handles the action when the user clicks the "Track Time" button.
+     * Calculates the hours worked based on the start and end times, then sends the data to the server.
+     */
     @FXML
     private void trackTime() {
         LocalDate date = dateTrackField.getValue();
@@ -49,6 +55,13 @@ public class WorkingHoursController {
         }
     }
 
+    /**
+     * Calculates the difference between two time strings in hours and minutes format.
+     *
+     * @param startTime The start time in "HH:mm" format.
+     * @param endTime   The end time in "HH:mm" format.
+     * @return The calculated hours and minutes as a formatted string "HH:mm".
+     */
     public String calculateHours (String startTime, String endTime){
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
         Date start = null;
@@ -71,6 +84,15 @@ public class WorkingHoursController {
         return hoursCalc;
     }
 
+    /**
+     * Sends the working hours data to the server.
+     *
+     * @param date      The date in "dd.MM.yyyy" format.
+     * @param startTime The start time in "HH:mm" format.
+     * @param endTime   The end time in "HH:mm" format.
+     * @param hoursDone The calculated hours and minutes worked as a formatted string "HH:mm".
+     * @return The server response to the working hours tracking request.
+     */
     private String sendWorkingHoursToServer(String date, String startTime, String endTime, String hoursDone){
         String serverResponseTrack = "";
         try (Socket clientSocket = new Socket("localhost", 6789)) {
@@ -92,6 +114,13 @@ public class WorkingHoursController {
         return serverResponseTrack;
     }
 
+
+    /**
+     * Initializes data for the controller.
+     * Currently not used, but can be implemented to pass the logged-in user's information.
+     *
+     * @param loggedInUser The logged-in user object.
+     */
     public void initData(User loggedInUser) {
         //this.loggedInUser = loggedInUser;
         //title.setText("Task Tracking for user: " + loggedInUser.getUsername());

@@ -1,6 +1,8 @@
 package com.example.time;
 
-// Status.java (Enum)
+/**
+ * The Status enum represents the status of a holiday request.
+ */
 public enum Status {
     PENDING, APPROVED, REJECTED;
 }

@@ -1,6 +1,8 @@
 package com.example.time;
 
-// Role.java (Enum)
+/**
+ * The Role enum represents the role of a user.
+ */
 public enum Role {
     EMPLOYEE, MANAGER;
 }

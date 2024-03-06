@@ -1,4 +1,3 @@
-// TaskTrackingController.java
 package controller;
 
 import com.example.time.CsvUtil;
@@ -16,6 +15,11 @@ import java.io.InputStreamReader;
 import java.net.Socket;
 import java.util.List;
 
+/**
+ * The TaskTrackingController class is responsible for handling task tracking functionality.
+ *  * It allows users to input task details such as task name, ID, and time spent,
+ *  * and sends this information to the server for task tracking.
+ */
 public class TaskTrackingController {
 
     private User loggedInUser;
@@ -29,6 +33,12 @@ public class TaskTrackingController {
     @FXML
     private Text title;
 
+    /**
+     * Handles the action when the user tracks a task.
+     * It retrieves the input from the text fields, validates the input,
+     * and sends a task tracking request to the server.
+     * If successful, it saves the task to a CSV file.
+     */
     @FXML
     private void trackTask() {
         // Add logic to handle task tracking
@@ -52,6 +62,13 @@ public class TaskTrackingController {
         }
     }
 
+    /**
+     * Utility method to extract the numeric value from a string.
+     * Used to parse the time spent on the task.
+     *
+     * @param input The input string containing the numeric value.
+     * @return The extracted numeric value as an integer.
+     */
     private int extractNumericValue(String input) {
         // Extract numeric part from the input (e.g., "2 hours" -> 2)
         int numericValue = 0;
@@ -70,7 +87,17 @@ public class TaskTrackingController {
     }
     int assignedRole = 1; // Use 1 to represent EMPLOYEE
 
-
+    /**
+     * Saves the tracked task to a CSV file.
+     * It converts the assigned role from a string to the Role enum,
+     * creates a new Task object, reads existing tasks from the CSV file,
+     * adds the new task, and writes the updated task list back to the CSV file.
+     *
+     * @param taskId       The ID of the task.
+     * @param description  The description of the task.
+     * @param timeSpent    The time spent on the task.
+     * @param assignedRole The role assigned to the user for this task.
+     */
     private void saveTaskToCsv(int taskId, String description, int timeSpent, String assignedRole) {
         Role role;
         if ("EMPLOYEE".equals(assignedRole)) {
@@ -114,6 +141,11 @@ public class TaskTrackingController {
         return serverResponseTrack;
     }
 
+    /**
+     * Initializes the controller with the logged-in user's information.
+     *
+     * @param loggedInUser The logged-in user for whom the task tracking is being done.
+     */
     public void initData(User loggedInUser) {
         this.loggedInUser = loggedInUser;
         if (loggedInUser != null)

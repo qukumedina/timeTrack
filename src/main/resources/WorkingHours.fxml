@@ -4,7 +4,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox alignment="CENTER" prefHeight="263.0" prefWidth="395.0" spacing="10" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.WorkingHoursController">
+<VBox alignment="CENTER" prefHeight="246.0" prefWidth="395.0" spacing="10" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.WorkingHoursController">
     <Label maxWidth="-Infinity" prefHeight="39.0" prefWidth="109.0" text="WORKING HOURS" textAlignment="JUSTIFY">
       <padding>
          <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />

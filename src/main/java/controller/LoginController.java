@@ -1,4 +1,3 @@
-// LoginController.java
 package controller;
 
 import com.example.time.*;
@@ -16,6 +15,10 @@ import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+/**
+ * Controller class for handling user login functionality.
+ *  * Allows users to log in, check user roles, and navigate to different screens based on roles.
+ */
 public class LoginController {
 
     private User loggedInUser;
@@ -33,25 +36,10 @@ public class LoginController {
     private User currentUser; // Assume this is set to the currently logged-in user
 
     @FXML
-
-
-/*    private void login() {
-        String username = usernameField.getText().trim();
-        String password = passwordField.getText().trim();
-
-        String response = sendLoginRequestToServer(username, password);
-        String[] responseParts = response.split(":");
-
-        if (responseParts[0].equals("Login Successful")) {
-            if (responseParts[1].equals("Manager")) {
-                loadManagerScreen();
-            } else {
-                loadTaskTrackingScreen();
-            }
-        } else {
-            System.out.println("Invalid login credentials");
-        }
-    }*/
+    /**
+     * Handles the action when the user clicks the login button.
+     * Sends login request to the server, processes the response, and loads the appropriate screen.
+     */
     private void login() {
         String username = usernameField.getText().trim();
         String password = passwordField.getText().trim();
@@ -89,10 +77,22 @@ public class LoginController {
         }
     }
 
+    /**
+     * Converts the user role string from the server response to a Role enum.
+     * @param roleStr The user role string from the server response.
+     * @return The corresponding Role enum.
+     */
     private Role getUserRoleFromResponse(String roleStr) {
         return "Manager".equalsIgnoreCase(roleStr) ? Role.MANAGER : Role.EMPLOYEE;
     }
 
+    /**
+     * Sends a login request to the server with the provided username and password.
+     * Receives and returns the server's response.
+     * @param username The username for login.
+     * @param password The password for login.
+     * @return The server's response to the login request.
+     */
     private String sendLoginRequestToServer(String username, String password) {
         String serverResponse = "";
         try (Socket clientSocket = new Socket("localhost", 6789)) {
@@ -116,6 +116,9 @@ public class LoginController {
 
 
 
+    /**
+     * Loads the employee screen after successful login.
+     */
     private void loadEmployeeScreen() {
         try {
             TCPClient.getInstance().loadEmployeeScreen(loggedInUser);
@@ -124,6 +127,9 @@ public class LoginController {
         }
     }
 
+    /**
+     * Loads the manager screen after successful login.
+     */
     private void loadManagerScreen() {
         try {
             TCPClient.getInstance().loadManagerScreen();
@@ -139,19 +145,32 @@ public class LoginController {
         }
     }
     // Call this method after the user logs in
+    /**
+     * Checks the user role and displays the manager screen button if the user is a manager.
+     */
     public void checkUserRole() {
         if (currentUser != null && currentUser.getRole() == Role.MANAGER) {
             managerScreenButton.setVisible(true);
         }
     }
 
-
+    /**
+     * Checks if the provided login credentials are valid.
+     * @param username The username for login.
+     * @param password The password for login.
+     * @return True if the credentials are valid, false otherwise.
+     */
     private boolean isValidLogin(String username, String password) {
         List<User> userList = CsvUtil.readCsv(USERS_CSV_FILE, User.class);
         return userList.stream()
                 .anyMatch(user -> user.getUsername().equals(username) && user.getPassword().equals(password));
     }
 
+    /**
+     * Retrieves the user object based on the provided username.
+     * @param username The username of the user to retrieve.
+     * @return The User object corresponding to the username.
+     */
     private User getUserByUsername(String username) {
         List<User> userList = CsvUtil.readCsv(USERS_CSV_FILE, User.class);
         return userList.stream()
@@ -160,6 +179,10 @@ public class LoginController {
                 .orElse(null);
     }
 
+    /**
+     * Handles the action when the user clicks the button to navigate to the registration screen.
+     * Loads the registration screen.
+     */
     @FXML
     private void goToRegister() {
         try {
@@ -168,6 +191,11 @@ public class LoginController {
             e.printStackTrace();
         }
     }
+
+    /**
+     * Handles the action when the user clicks the button to navigate to the manager screen.
+     * Loads the manager screen.
+     */
     @FXML
     private void goToManagerScreen() {
         try {
@@ -177,6 +205,11 @@ public class LoginController {
         }
     }
 
+    /**
+     * Initializes the data for the controller.
+     * Sets the list of users.
+     * @param users The list of users.
+     */
     public void initData(Queue<User> users) {
         this.userList = users;
     }

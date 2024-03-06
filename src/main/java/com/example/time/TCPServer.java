@@ -9,6 +9,9 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+/**
+ * The TCPServer class represents a TCP server that handles client requests.
+ */
 public class TCPServer implements Runnable{
     private static final String USERS_CSV_FILE = "users.csv"; // Path to your users CSV file
     private static final String TASKS_CSV_FILE = "tasks.csv"; // Path to your users CSV file
@@ -24,6 +27,11 @@ public class TCPServer implements Runnable{
 
     private AtomicBoolean isShutdown = new AtomicBoolean(false);
 
+    /**
+     * The main entry point for the TCP server.
+     *
+     * @param args Command-line arguments
+     */
     public static void main(String[] args) {
         new TCPServer().run();
     }

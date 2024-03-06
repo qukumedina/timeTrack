@@ -8,8 +8,16 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Scanner;
 
+/**
+ * The ServerShutdowner class provides a client to send a shutdown command to the server.
+ */
 public class ServerShutdowner {
 
+    /**
+     * Main method to execute the server shutdown client.
+     *
+     * @param args Command-line arguments (not used)
+     */
     public static void main(String[] args) {
 
         // Here you can include the TCP client logic after the JavaFX application is launched

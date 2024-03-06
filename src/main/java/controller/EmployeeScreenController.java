@@ -17,6 +17,10 @@ import java.io.InputStreamReader;
 import java.net.Socket;
 import java.util.List;
 
+/**
+ * Controller class for the employee screen.
+ *  * Handles actions related to task tracking and time tracking.
+ */
 public class EmployeeScreenController {
 
     @FXML
@@ -27,6 +31,9 @@ public class EmployeeScreenController {
     private User loggedInUser;
 
 
+    /**
+     * Navigates to the time tracking screen.
+     */
     @FXML
     private void goTimeTrack() {
         try {
@@ -35,6 +42,9 @@ public class EmployeeScreenController {
             e.printStackTrace();
         }
     }
+    /**
+     * Navigates to the task tracking screen.
+     */
     @FXML
     private void goTaskTrack() {
         try {
@@ -44,6 +54,10 @@ public class EmployeeScreenController {
         }
     }
 
+    /**
+     * Initializes the controller with the logged-in user.
+     * @param loggedInUser The logged-in user.
+     */
     public void initData(User loggedInUser) {
         this.loggedInUser = loggedInUser;
     }

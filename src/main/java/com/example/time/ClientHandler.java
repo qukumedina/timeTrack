@@ -13,6 +13,10 @@ import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+/**
+ * The ClientHandler class handles client requests in a multithreaded server application.
+ * It implements the Runnable interface to run as a separate thread for each client connection.
+ */
 public class ClientHandler implements Runnable{
 
     private final Socket connectionSocket;
@@ -22,6 +26,18 @@ public class ClientHandler implements Runnable{
     private final Queue<HolidayRequest> holidayRequests;
 
     private AtomicBoolean isShutdown;
+
+    /**
+     *
+     * Constructs a ClientHandler object with the given parameters.
+     *
+     * @param connectionSocket The client's socket connection
+     * @param userList          The queue of users
+     * @param taskList          The queue of tasks
+     * @param workingHours      The queue of working hours
+     * @param holidayRequests   The queue of holiday requests
+     * @param isShutdown        AtomicBoolean flag to indicate server shutdown
+     */
     public ClientHandler(Socket connectionSocket, Queue<User> userList, Queue<Task> taskList, Queue<WorkingHours> workingHours, Queue<HolidayRequest> holidayRequests, AtomicBoolean isShutdown) {
         this.connectionSocket = connectionSocket;
         this.userList = userList;
@@ -31,6 +47,10 @@ public class ClientHandler implements Runnable{
         this.isShutdown = isShutdown;
     }
 
+    /**
+     * Executes the client request handling logic.
+     * Reads client requests, processes them, and sends back responses.
+     */
     @Override
     public void run() {
         BufferedReader inFromClient = null;
@@ -65,6 +85,12 @@ public class ClientHandler implements Runnable{
         }
     }
 
+    /**
+     * Processes a registration request from the client.
+     *
+     * @param request   The registartion request from the client
+     * @return          A response indicating the result of the registration attempt
+     */
     private String processRegisterRequest(String request) {
         try {
             String[] details = request.substring(9).split(",");
@@ -96,6 +122,12 @@ public class ClientHandler implements Runnable{
         }
     }
 
+    /**
+     * Processes a login request from the client.
+     *
+     * @param request   The login request from the client
+     * @return          A response indicating the result of the login attempt
+     */
     private String processLoginRequest(String request) {
         String[] details = request.substring(6).split(",");
         String username = details[0];
@@ -112,6 +144,12 @@ public class ClientHandler implements Runnable{
         }
     }
 
+    /**
+     * Processes a track time request from the client.
+     *
+     * @param request   The track time request from the client
+     * @return          A response indicating the result of the track time operation
+     */
     private String processTrackTimeRequest(String request) {
         String[] details = request.substring(11).split(",");
         String date = details[0];
@@ -128,17 +166,32 @@ public class ClientHandler implements Runnable{
         System.out.println("Time Tracked Successfully");
         return "ime Tracked Successfully";
     }
+
+    /**
+     * Validates a user's login credentials.
+     *
+     * @param username  The username to validate
+     * @param password  The password to validate
+     * @return          true, if the credentials are valid, false otherwise
+     */
     private boolean validateLogin(String username, String password) {
         return userList.stream()
                 .anyMatch(user -> user.getUsername().equals(username) && user.getPassword().equals(password));
     }
 
+    /**
+     * Retrieves a user object by username
+     *
+     * @param username  The username of the user to retrieve
+     * @return          The User object corresponding to the username, or null if not found
+     */
     private User getUserByUsername(String username) {
         return userList.stream()
                 .filter(user -> user.getUsername().equals(username))
                 .findFirst()
                 .orElse(null);
     }
+
 
     private Role getRoleFromId(int roleId) {
         switch (roleId) {
@@ -150,6 +203,12 @@ public class ClientHandler implements Runnable{
     }
 
 
+    /**
+     * Processes an assigned task request from the client
+     *
+     * @param request   The assigned task request from the client
+     * @return          A response indicating the result of the assigned task operation
+     */
     private String processAssignTaskRequest(String request) {
         try {
             System.out.println("Received AssignTask request: " + request);
@@ -191,6 +250,11 @@ public class ClientHandler implements Runnable{
         }
     }
 
+    /**
+     * Determines if the task tracking screen can be loaded.
+     *
+     * @return  A message indicating whether the screen can be loaded or access is denied
+     */
     private static String processLoadTaskTrackingScreen() {
         // Add your logic here to determine if the task tracking screen can be loaded
         // For example, check user roles, permissions, etc.

@@ -24,6 +24,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+/**
+ * Controller class for managing tasks, holiday requests, and user registrations by a manager.
+ */
 public class ManagerController {
 
     @FXML
@@ -52,6 +55,12 @@ public class ManagerController {
     private Button editTaskButton; // Button for editing a selected task
     @FXML
     private Label holidaysLabel;
+
+    /**
+     * Initializes the manager controller.
+     * Sets up task table columns, loads tasks into the table, loads pending registrations,
+     * and initializes the employee combo box.
+     */
     @FXML
     private void initialize() {
         setupTaskTableColumns();
@@ -65,6 +74,11 @@ public class ManagerController {
         employeeComboBox.setItems(FXCollections.observableArrayList(employees));
 
     }
+
+    /**
+     * Handles the action when the manager assigns a task.
+     * Opens a dialog for the manager to enter task details and assigns the task.
+     */
     @FXML
     private void handleAssignTask() {
 
@@ -145,7 +159,11 @@ public class ManagerController {
         });
     }
 
-
+    /**
+     * Checks if a given string is a valid integer.
+     * @param s The string to check.
+     * @return True if the string is a valid integer, false otherwise.
+     */
     private boolean isInteger(String s) {
         try {
             Integer.parseInt(s);
@@ -156,7 +174,11 @@ public class ManagerController {
     }
 
 
-
+    /**
+     * Shows an alert with the given title and content.
+     * @param title The title of the alert.
+     * @param content The content of the alert.
+     */
     private void showAlert(String title, String content) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(title);
@@ -165,7 +187,13 @@ public class ManagerController {
         alert.showAndWait();
     }
 
-
+    /**
+     * Sends a task assignment request to the server.
+     * @param description The description of the task.
+     * @param time The time required for the task.
+     * @param role The role to which the task is assigned (Employee/Manager).
+     * @return The server's response to the task assignment request.
+     */
     // Update the sendTaskToServer method to include the selected role
     private String sendTaskToServer(String description, int time, Role role) {
         String serverResponse = "";
@@ -281,7 +309,10 @@ public class ManagerController {
 // Other methods and logic...
 
 
-
+    /**
+     * Generates a unique task ID.
+     * @return The generated task ID.
+     */
     private int generateTaskId() {
         List<Task> tasks = CsvUtil.readCsv("tasks.csv", Task.class);
         int maxId = tasks.stream()
@@ -292,6 +323,9 @@ public class ManagerController {
         return maxId + 1; // Return the next available ID
     }
 
+    /**
+     * Sets up the columns for the task table.
+     */
     private void setupTaskTableColumns() {
         // Assuming the Task class has 'id' and 'description' properties
         taskIdColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
@@ -301,6 +335,9 @@ public class ManagerController {
         // Initialize other columns similarly
     }
 
+    /**
+     * Loads tasks from CSV and populates the task table.
+     */
     private void loadTasksIntoTable() {
         List<Task> tasks = CsvUtil.readTaskCsv("tasks.csv", Task.class);
         ObservableList<Task> taskData = FXCollections.observableArrayList(tasks);
@@ -308,7 +345,10 @@ public class ManagerController {
     }
 
 
-
+    /**
+     * Handles the action when the manager clicks the "Edit Task" button.
+     * Opens a dialog to edit the selected task's details.
+     */
     @FXML
     private void handleEditTask() {
         Task selectedTask = taskTableView.getSelectionModel().getSelectedItem();
@@ -316,6 +356,11 @@ public class ManagerController {
             openEditTaskDialog(selectedTask);
         }
     }
+
+    /**
+     * Opens a dialog to edit the details of a task.
+     * @param task The task to edit.
+     */
     private void openEditTaskDialog(Task task) {
         Stage dialogStage = new Stage();
         dialogStage.initModality(Modality.WINDOW_MODAL); // Block interaction with other windows
@@ -341,6 +386,10 @@ public class ManagerController {
         dialogStage.setScene(dialogScene);
         dialogStage.showAndWait();
     }
+    /**
+     * Updates a task in the CSV file.
+     * @param task The task to update.
+     */
     private void updateTaskInCsv(Task task) {
         List<Task> tasks = CsvUtil.readTaskCsv("tasks.csv", Task.class);
         tasks.removeIf(t -> t.getTaskId() == task.getTaskId());
@@ -383,6 +432,10 @@ public class ManagerController {
             updateUsersInCsv();
         }
     }*/
+    /**
+     * Handles the action when the manager approves a selected registration.
+     * Sends an approval request to the server and updates the status locally if successful.
+     */
 @FXML
 private void approveSelectedRegistration() {
     User selectedUser = pendingRegistrationsListView.getSelectionModel().getSelectedItem();
@@ -414,7 +467,12 @@ private void approveSelectedRegistration() {
 
 
 
-
+    /**
+     * Sends an approval request to the server for a registration.
+     * @param username The username of the user to approve.
+     * @param isApproval True if the request is an approval, false if rejection.
+     * @return The server's response to the approval request.
+     */
     private String sendApprovalToServer(String username, boolean isApproval) {
         String serverResponse = "";
         try (Socket clientSocket = new Socket("localhost", 6789)) {
@@ -451,6 +509,7 @@ private void approveSelectedRegistration() {
             loadPendingRegistrations();
         }
     }
+
     private void loadPendingRegistrations() {
         List<User> users = CsvUtil.readCsv("users.csv", User.class);
         List<User> pendingUsers = users.stream()
@@ -463,6 +522,9 @@ private void approveSelectedRegistration() {
         CsvUtil.writeCsv(users, "users.csv");
         handleApproveRegistrations(); // Refresh the list
     }
+    /**
+     * Loads holiday requests from the server and populates the list view.
+     */
     @FXML
     private void loadHolidayRequests() {
         // Send a request to the server to get the holiday requests
@@ -473,7 +535,9 @@ private void approveSelectedRegistration() {
         List<HolidayRequest> requests = CsvUtil.readCsv(response, HolidayRequest.class);
         holidayRequestListView.setItems(FXCollections.observableArrayList(requests));
     }
-
+    /**
+     * Approves the selected holiday request.
+     */
     @FXML
     private void approveSelectedRequest() {
         HolidayRequest selectedRequest = holidayRequestListView.getSelectionModel().getSelectedItem();
@@ -517,6 +581,9 @@ private void approveSelectedRegistration() {
         loadHolidayRequests(); // Refresh the list view
     }
 
+    /**
+     * Sends a request to the server to proceed to the task tracking screen.
+     */
     @FXML
     private void goToTaskTracking() {
         String response = sendRequestTTasktrackingoServer("LoadTaskTrackingScreen");
@@ -549,7 +616,10 @@ private void approveSelectedRegistration() {
         return serverResponse;
     }
 
-
+    /**
+     * Handles the action when the manager approves holiday requests.
+     * This method is not yet implemented.
+     */
     @FXML
     private void handleApproveHolidayRequests() {
         // TODO: Implement logic for approving holiday requests

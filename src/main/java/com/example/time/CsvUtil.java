@@ -5,6 +5,9 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
+/**
+ * The CSVUtil class provides utility methods for reading from and writing to CSV files.
+ */
 public class CsvUtil {
     private static final String USERS_CSV_FILE = "users.csv";
     private static final String Tasks_CSV_FILE = "tasks.csv";
@@ -16,6 +19,13 @@ public class CsvUtil {
 
     private static final String NEW_LINE_SEPARATOR = "\n";
 
+    /**
+     * Writes a list of objects to the users CSV file.
+     *
+     * @param dataList  The list of objects to write to the CSV file
+     * @param USERS_CSV_FILE    The name of the CSV file to write to
+     * @param <T>   The type of objects in the list
+     */
     // Write data to CSV file
     public static <T> void writeCsv(List<T> dataList, String USERS_CSV_FILE) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(USERS_CSV_FILE))) {
@@ -28,6 +38,14 @@ public class CsvUtil {
             // Handle the exception or throw a custom exception if needed
         }
     }
+
+    /**
+     *Writes a list of objects to the tasks CSV file.
+     *
+     * @param dataList  The list of objects to write to the CSV file
+     * @param tasks_CSV_FILE    The name of the CSV file to write to
+     * @param <T>   The type of objects in the list
+     */
     public static <T> void writeTaskCsv(List<T> dataList, String tasks_CSV_FILE) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(tasks_CSV_FILE))) {
             for (T data : dataList) {
@@ -40,6 +58,13 @@ public class CsvUtil {
         }
     }
 
+    /**
+     *Writes a list of objects to the working hours CSV file.
+     *
+     * @param dataList  The list of objects to write to the CSV file
+     * @param  TrackTime_CSV_FILE  The name of the CSV file to write to
+     * @param <T>   The type of objects in the list
+     */
     public static <T> void writeTrackTimeCsv(List<T> dataList, String TrackTime_CSV_FILE) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(TrackTime_CSV_FILE))) {
             for (T data : dataList) {
@@ -51,6 +76,15 @@ public class CsvUtil {
             // Handle the exception or throw a custom exception if needed
         }
     }
+
+    /**
+     * Reads data from the users CSV file and returns a list of objects.
+     *
+     * @param fileName  The name of the CSV file to read from
+     * @param dataClass The class of the objects to create from the CSV data
+     * @param <T>   The type of objects to return
+     * @return  A list of objects read from the CSV file
+     */
     // Read data from CSV file
     public static <T> List<T> readCsv(String fileName, Class<T> dataClass) {
         List<T> dataList = new ArrayList<>();
@@ -71,6 +105,15 @@ public class CsvUtil {
         }
         return dataList;
     }
+
+    /**
+     * Reads data from the task CSV file and returns a list of objects.
+     *
+     * @param fileName  The name of the CSV file to read from
+     * @param dataClass The class of the objects to create from the CSV data
+     * @param <T>   The type of objects to return
+     * @return  A list of objects read from the CSV file
+     */
     public static <T> List<T> readTaskCsv(String fileName, Class<T> dataClass) {
         List<T> dataList = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader
@@ -91,6 +134,14 @@ public class CsvUtil {
         return dataList;
     }
 
+    /**
+     * Reads data from the working hours CSV file and returns a list of objects.
+     *
+     * @param fileName  The name of the CSV file to read from
+     * @param dataClass The class of the objects to create from the CSV data
+     * @param <T>   The type of objects to return
+     * @return  A list of objects read from the CSV file
+     */
     public static <T> List<T> readTrackTimeCsv(String fileName, Class<T> dataClass) {
         List<T> dataList = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader
@@ -113,6 +164,14 @@ public class CsvUtil {
 
 
     // Convert a list of objects to a CSV-formatted string
+
+    /**
+     * Converts a list of objects to a CSV-formatted string.
+     *
+     * @param dataList  The List of objects to convert
+     * @return      A CSV-formatted string representing the list of objects
+     * @param <T>   The type of objects in the list
+     */
     public static <T> String convertListToCsvString(List<T> dataList) {
         StringBuilder sb = new StringBuilder();
         for (T data : dataList) {
@@ -123,6 +182,14 @@ public class CsvUtil {
     }
 
 
+    /**
+     * Creates an instance of the working hours class based on the CSV-formatted line
+     *
+     * @param line  The CSV-formatted line
+     * @param dataClass The class of the object to create
+     * @param <T>   The type of objects to create
+     * @return  An instance of the Track class created from the CSV line
+     */
     public static <T> T createTrackInstance(String line, Class<T> dataClass) {
         String[] fields = line.split(COMMA_DELIMITER);
         try {
@@ -149,7 +216,15 @@ public class CsvUtil {
     // Assumes lastAssignedUserId is a static member of CsvUtil and managed there.
 
     // Adjusted method to create a User instance without needing an ID from CSV
-   public static <T> T createDataInstance(String line, Class<T> dataClass) {
+    /**
+     * Creates an instance of the User class based on the CSV-formatted line
+     *
+     * @param line  The CSV-formatted line
+     * @param dataClass The class of the object to create
+     * @param <T>   The type of objects to create
+     * @return  An instance of the Track class created from the CSV line
+     */
+    public static <T> T createDataInstance(String line, Class<T> dataClass) {
         String[] fields = line.split(COMMA_DELIMITER);
         try {
             if (fields.length > 1) {
@@ -169,6 +244,14 @@ public class CsvUtil {
         }
         return null;
     }
+    /**
+     * Creates an instance of the Task class based on the CSV-formatted line
+     *
+     * @param line  The CSV-formatted line
+     * @param dataClass The class of the object to create
+     * @param <T>   The type of objects to create
+     * @return  An instance of the Track class created from the CSV line
+     */
     public static <T> T createTaskInstance(String line, Class<T> dataClass) {
         String[] fields = line.split(COMMA_DELIMITER);
         try {
@@ -192,6 +275,11 @@ public class CsvUtil {
     }
 
 
+    /**
+     * Generates a new task ID.
+     *
+     * @return  The generated task ID.
+     */
     // Add the following method for generating a unique task ID
     public static int generateTaskId() {
         List<Task> tasks = readCsv("tasks.csv", Task.class);
@@ -202,6 +290,12 @@ public class CsvUtil {
 
         return maxId + 1;
     }
+
+    /**
+     * Generates a new user ID.
+     *
+     * @return  The generated used ID.
+     */
     // Increment the last assigned user ID and return the new value
     public static int generateUserId() {
         return ++lastAssignedUserId;
