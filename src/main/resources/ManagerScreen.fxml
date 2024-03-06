@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <?import javafx.scene.control.*?>
-<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.layout.*?>
 
-<VBox xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ManagerController">
-    <Label fx:id="holidaysLabel"/>
+<VBox prefHeight="1553.0" prefWidth="385.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/17.0.2-ea" fx:controller="controller.ManagerController">
+    <Label fx:id="holidaysLabel" />
 
     <Label text="Manager Dashboard" />
 
     <!-- Buttons for other managerial functionalities -->
-    <Button text="Approve Registrations" onAction="#handleApproveRegistrations" />
-    <Button text="Approve Holiday Requests" onAction="#handleApproveHolidayRequests" />
+    <Button onAction="#handleApproveRegistrations" text="Approve Registrations" />
+    <Button onAction="#handleApproveHolidayRequests" text="Approve Holiday Requests" />
 
     <!-- TableView for managing tasks -->
     <Label text="Task Management" />
@@ -23,17 +23,17 @@
     <ComboBox fx:id="employeeComboBox" /> <!-- Dropdown to select an employee -->
     <TextField fx:id="taskDescriptionField" /> <!-- Field to enter task description -->
     <TextField fx:id="taskTimeField" /> <!-- Field to enter expected time for task -->
-    <Button text="Assign Task" onAction="#handleAssignTask" /> <!-- Button to assign task -->
+    <Button onAction="#handleAssignTask" text="Assign Task" /> <!-- Button to assign task -->
 
     <Label text="Pending Registrations" />
     <ListView fx:id="pendingRegistrationsListView" />
-    <Button text="Approve" onAction="#approveSelectedRegistration"/>
-    <Button text="Reject" onAction="#rejectSelectedRegistration"/>
+    <Button onAction="#approveSelectedRegistration" text="Approve" />
+    <Button onAction="#rejectSelectedRegistration" text="Reject" />
     <!-- Part of ManagerScreen.fxml -->
-    <ListView fx:id="holidayRequestListView"/>
-    <Button text="Approve Request" onAction="#approveSelectedRequest"/>
-    <Button text="Go to Task Tracking" onAction="#goToTaskTracking"/>
+    <ListView fx:id="holidayRequestListView" />
+    <Button onAction="#approveSelectedRequest" text="Approve Request" />
+    <Button onAction="#goToTaskTracking" text="Go to Task Tracking" />
 
 
-    <Button text="Edit Selected Task" onAction="#handleEditTask"/>
+    <Button onAction="#handleEditTask" text="Edit Selected Task" />
 </VBox>

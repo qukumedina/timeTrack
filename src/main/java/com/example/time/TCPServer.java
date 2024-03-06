@@ -7,18 +7,22 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class TCPServer implements Runnable{
-    private static int port = 6789;
     private static final String USERS_CSV_FILE = "users.csv"; // Path to your users CSV file
     private static final String TASKS_CSV_FILE = "tasks.csv"; // Path to your users CSV file
+    private static final String TrackTime_CSV_FILE = "workinghrs.csv"; // Path to your users CSV file
+
     private static final String HOLIDAY_REQUESTS_CSV_FILE = "holidayRequests.csv"; // Path to your holiday requests CSV file
 
     private final Queue<User> userList = new ConcurrentLinkedQueue<>();
     private final Queue<Task> taskList = new ConcurrentLinkedQueue<>();
+    private final Queue<WorkingHours> workingHoursList = new ConcurrentLinkedQueue<>();
+
     private final Queue<HolidayRequest> holidayRequests = new ConcurrentLinkedQueue<>();
 
-
+    private AtomicBoolean isShutdown = new AtomicBoolean(false);
 
     public static void main(String[] args) {
         new TCPServer().run();
@@ -30,25 +34,50 @@ public class TCPServer implements Runnable{
     public void run() {
         List<User>  users = CsvUtil.readCsv(USERS_CSV_FILE, User.class);
         List<Task> tasks = CsvUtil.readTaskCsv(TASKS_CSV_FILE, Task.class);
+        List<WorkingHours> workingHours1 = CsvUtil.readTrackTimeCsv(TrackTime_CSV_FILE, WorkingHours.class);
+
         taskList.addAll(tasks);
         userList.addAll(users);
+        workingHoursList.addAll(workingHours1);
+
         ServerSocket server = null;
 
         try {
+            int port = 6789;
             System.out.println("Server is listening on port " + port);
             server = new ServerSocket(port);
 
-            while (true) {
+            while (!isShutdown.get()) {
                 Socket connectionSocket = server.accept();
-                //clienthadler
-                new ClientHandler(connectionSocket, userList, taskList, holidayRequests).run();
+                new ClientHandler(connectionSocket, userList, taskList, workingHoursList, holidayRequests, isShutdown).run();
 
-                // Handle other types of requests here
+                String command;
+                /*BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+                while ( (command = reader.readLine()) != null ) {
+                    if ("shutdown".equals(command)) {
+                        shutdown();
+                    }
+                }*/
             }
+        } catch (SocketException e) {
+            System.out.println("FINALLY not socketed");
+
+            e.printStackTrace();
         } catch (IOException e) {
+            System.out.println("FINALLY not");
+
             e.printStackTrace();
         } finally {
             // Write the updated list to the CSV file
+            System.out.println("FINALLY");
+            List<User> users1 = new ArrayList<>(userList);
+            CsvUtil.writeCsv(users1, USERS_CSV_FILE);
+
+            List<Task> tasks1 = new ArrayList<>(taskList);
+            CsvUtil.writeTaskCsv(tasks1, TASKS_CSV_FILE);
+
+            List<WorkingHours> hours = new ArrayList<>(workingHoursList);
+            CsvUtil.writeTrackTimeCsv(hours, TrackTime_CSV_FILE);
 
             if (server != null) {
                 try {

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox alignment="CENTER" prefHeight="263.0" prefWidth="395.0" spacing="10" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.WorkingHoursController">
+    <Label maxWidth="-Infinity" prefHeight="39.0" prefWidth="109.0" text="WORKING HOURS" textAlignment="JUSTIFY">
+      <padding>
+         <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+      </padding></Label>
+   <DatePicker fx:id="dateTrackField" promptText="Date" />
+   <TextField fx:id="startTimeField" maxWidth="-Infinity" prefHeight="25.0" prefWidth="173.0" promptText="Start Time" />
+   <TextField fx:id="endTimeField" maxWidth="-Infinity" prefHeight="25.0" prefWidth="173.0" promptText="End Time" />
+   <Button layoutX="129.0" layoutY="138.0" onAction="#trackTime" prefHeight="25.0" prefWidth="89.0" text="SAVE" />
+</VBox>

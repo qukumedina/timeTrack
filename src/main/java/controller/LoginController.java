@@ -13,8 +13,13 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
 import java.util.List;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class LoginController {
+
+    private User loggedInUser;
+    private Queue<User> userList = new ConcurrentLinkedQueue<>();
 
     @FXML
     private TextField usernameField;
@@ -64,10 +69,17 @@ public class LoginController {
                 Role userRole = getUserRoleFromResponse(responseParts[1]);
                 System.out.println("Login successful, user role: " + userRole); // Debug
 
+                for (User user : userList) {
+                    if (user.getUsername().equals(username)){
+                        loggedInUser = user;
+                        break;
+                    }
+                }
+
                 if (userRole == Role.MANAGER) {
                     loadManagerScreen();
                 } else {
-                    loadTaskTrackingScreen();
+                    loadEmployeeScreen();
                 }
             } else {
                 System.out.println("Invalid login credentials");
@@ -104,6 +116,14 @@ public class LoginController {
 
 
 
+    private void loadEmployeeScreen() {
+        try {
+            TCPClient.getInstance().loadEmployeeScreen(loggedInUser);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void loadManagerScreen() {
         try {
             TCPClient.getInstance().loadManagerScreen();
@@ -111,10 +131,9 @@ public class LoginController {
             e.printStackTrace();
         }
     }
-
     private void loadTaskTrackingScreen() {
         try {
-            TCPClient.getInstance().loadTaskTrackingScreen();
+            TCPClient.getInstance().loadTaskTrackingScreen(loggedInUser);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -156,6 +175,10 @@ public class LoginController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void initData(Queue<User> users) {
+        this.userList = users;
     }
 
 }

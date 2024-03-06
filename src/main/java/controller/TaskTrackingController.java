@@ -4,42 +4,52 @@ package controller;
 import com.example.time.CsvUtil;
 import com.example.time.Role;
 import com.example.time.Task;
+import com.example.time.User;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
+import javafx.scene.text.Text;
 
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.Socket;
 import java.util.List;
 
 public class TaskTrackingController {
+
+    private User loggedInUser;
 
     @FXML
     private TextField taskNameField;
     @FXML
     private TextField taskIDField;
-
     @FXML
     private TextField timeSpentField;
-
+    @FXML
+    private Text title;
 
     @FXML
     private void trackTask() {
         // Add logic to handle task tracking
-        //krejt palidhje s ka lidhje me server
-        //me e make sence si te useri
         String taskName = taskNameField.getText();
         String timeSpentInput = timeSpentField.getText();
         int taskId = Integer.parseInt(taskIDField.getText());
         String description = taskName; // Use a default description or add a new UI field
-        String assignedRoleInput = "EMPLOYEE"; // Initialize with a default role (e.g., "EMPLOYEE")
+        if (!taskName.isEmpty() && !timeSpentInput.isEmpty() && taskId == 0) {
+            // Handle validation or display an error message
+            System.out.println("Please fill in all fields");
+            return;
+        }
 
         // Extract the numeric part from the timeSpent input
         int timeSpent = extractNumericValue(timeSpentInput);
-
-        // Perform task tracking logic here
-        // For simplicity, let's just print the tracked task details
-        System.out.println("Task Tracked - Task Name: " + taskName + ", Time Spent: " + timeSpent + " hours");
-
-        // You can store the tracked task in a CSV file or perform other actions as needed
-        saveTaskToCsv(taskId, description, timeSpent, assignedRoleInput);
+        String response = sendRegistrationReqToServerTask(taskId, description, timeSpent);
+        if (response != null && response.startsWith("Task Assigned Successfully")) {
+            System.out.println("Task Tracked - Task name: " +description + ", Time Spent: " + timeSpentInput);
+        } else {
+            System.out.println("Time Tracked failed: " + response);
+        }
     }
 
     private int extractNumericValue(String input) {
@@ -81,7 +91,32 @@ public class TaskTrackingController {
         taskList.add(task);
 
         // Write the updated task list back to the CSV file
-        CsvUtil.writeCsv(taskList, "tasks.csv");
+        CsvUtil.writeTaskCsv(taskList, "tasks.csv");
+    }
+    private String sendRegistrationReqToServerTask(int taskId, String description, int timeSpent){
+        String serverResponseTrack = "";
+        try (Socket clientSocket = new Socket("localhost", 6789)) {
+            DataOutputStream outToServer = new DataOutputStream(clientSocket.getOutputStream());
+            BufferedReader inFromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+
+            String request = "AssignTask:" + taskId + "," + description + "," + timeSpent + '\n';
+            System.out.println("Sending to server: " + request);
+
+            outToServer.writeBytes(request);
+            serverResponseTrack = inFromServer.readLine();
+
+            // Print server response for debugging
+            System.out.println("FROM SERVER Track: " + serverResponseTrack);
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Error Track: " + e.getMessage());
+        }
+        return serverResponseTrack;
     }
 
+    public void initData(User loggedInUser) {
+        this.loggedInUser = loggedInUser;
+        if (loggedInUser != null)
+            title.setText("Task Tracking for user: " + loggedInUser.getUsername());
+    }
 }

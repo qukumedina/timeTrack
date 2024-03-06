@@ -5,23 +5,30 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Queue;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ClientHandler implements Runnable{
 
     private final Socket connectionSocket;
     private final Queue<User> userList;
     private final Queue<Task> taskList;
+    private final Queue<WorkingHours> workingHours;
     private final Queue<HolidayRequest> holidayRequests;
 
-    public ClientHandler(Socket connectionSocket, Queue<User> userList, Queue<Task> taskList, Queue<HolidayRequest> holidayRequests) {
+    private AtomicBoolean isShutdown;
+    public ClientHandler(Socket connectionSocket, Queue<User> userList, Queue<Task> taskList, Queue<WorkingHours> workingHours, Queue<HolidayRequest> holidayRequests, AtomicBoolean isShutdown) {
         this.connectionSocket = connectionSocket;
         this.userList = userList;
         this.taskList = taskList;
         this.holidayRequests = holidayRequests;
+        this.workingHours = workingHours;
+        this.isShutdown = isShutdown;
     }
 
     @Override
@@ -44,20 +51,14 @@ public class ClientHandler implements Runnable{
         }else if (request.startsWith("AssignTask:")) {
             String response = processAssignTaskRequest(request);
             outToClient.writeBytes(response + "\n");
-        }/*
-        else if (request.startsWith("ApproveRegistration:")) {
-            String response = processApproveRegistrationRequest(request);
+        }else if (request.startsWith("Track Time:")) {
+            String response = processTrackTimeRequest(request);
             outToClient.writeBytes(response + "\n");
-        }else if (request.equals("GetHolidayRequests")) {
-            String response = processGetHolidayRequests();
-            outToClient.writeBytes(response + "\n");
-        } else if (request.startsWith("ApproveHolidayRequest:")) {
-            int requestId = Integer.parseInt(request.substring(22));
-            String response = processApproveHolidayRequest(requestId);
-            outToClient.writeBytes(response + "\n");
-        } */else  if (request.equals("LoadTaskTrackingScreen")) {
+        }else  if (request.equals("LoadTaskTrackingScreen")) {
             String response = processLoadTaskTrackingScreen();
             outToClient.writeBytes(response + "\n");
+        }else  if (request.equals("SHUTDOWN")) {
+            isShutdown.set(true);
         }
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -86,7 +87,7 @@ public class ClientHandler implements Runnable{
             // Add logic to register the user with the specified role
             User newUser = new User(CsvUtil.generateUserId(), username, password, role, 40); // Set the role
             userList.add(newUser);
-
+            //CsvUtil.writeCsv(Arrays.asList(userList.toArray()), "users.csv");
             System.out.println("User registered successfully: " + username + ", Role: " + role);
             return "Registration Successful";
         } catch (Exception e) {
@@ -94,8 +95,6 @@ public class ClientHandler implements Runnable{
             return "Registration Failed: " + e.getMessage();
         }
     }
-
-
 
     private String processLoginRequest(String request) {
         String[] details = request.substring(6).split(",");
@@ -113,6 +112,22 @@ public class ClientHandler implements Runnable{
         }
     }
 
+    private String processTrackTimeRequest(String request) {
+        String[] details = request.substring(11).split(",");
+        String date = details[0];
+        String startTime = details[1];
+        String endTime = details[2];
+        String hoursDone = details[3];
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+        WorkingHours newTrackTime = new WorkingHours(LocalDate.parse(date, formatter), startTime, endTime, hoursDone);
+
+        //List<Task> tasks = CsvUtil.readTaskCsv(TASKS_CSV_FILE, Task.class);
+        workingHours.add(newTrackTime);
+        //CsvUtil.writeTaskCsv(tasks, TASKS_CSV_FILE);
+
+        System.out.println("Time Tracked Successfully");
+        return "ime Tracked Successfully";
+    }
     private boolean validateLogin(String username, String password) {
         return userList.stream()
                 .anyMatch(user -> user.getUsername().equals(username) && user.getPassword().equals(password));
@@ -140,12 +155,13 @@ public class ClientHandler implements Runnable{
             System.out.println("Received AssignTask request: " + request);
 
             String[] details = request.substring(11).split(",");
-            if (details.length != 4) { // Check for three details: description, timeSpent, and taskId
+            if (details.length != 3) { // Check for three details: description, timeSpent, and taskId
                 return "Invalid request format: Incorrect number of fields";
             }
 
-            String description = details[0].trim();
-            int timeSpent = Integer.parseInt(details[1].trim());
+            int taskId = Integer.parseInt(details[0].trim());
+            String description = details[1].trim();
+            int timeSpent = Integer.parseInt(details[2].trim());
 
             // Check if the logged-in user is a manager
             //  User loggedInUser = UserSession.getLoggedInUser();
@@ -153,7 +169,8 @@ public class ClientHandler implements Runnable{
             if (loggedInUser != null && loggedInUser.getRole() == Role.MANAGER) {
 */
             // If the user is a manager, they can assign the task
-            Task newTask = new Task(CsvUtil.generateTaskId(), description, timeSpent, Role.MANAGER);
+
+            Task newTask = new Task(taskId, description, timeSpent, Role.EMPLOYEE);
 
             //List<Task> tasks = CsvUtil.readTaskCsv(TASKS_CSV_FILE, Task.class);
             taskList.add(newTask);
@@ -174,67 +191,6 @@ public class ClientHandler implements Runnable{
         }
     }
 
-
-    /*
-    private static String processApproveRegistrationRequest(String request) {
-        try {
-            // Extract the username from the request
-            String username = request.substring(20); // Adjust substring index as needed
-
-            List<User> users = CsvUtil.readCsv(USERS_CSV_FILE, User.class);
-            boolean userFound = false;
-
-            for (User user : users) {
-                if (user.getUsername().equals(username)) {
-                    user.setStatus(Status.APPROVED);
-                    userFound = true;
-                    break;
-                }
-            }
-
-            if (userFound) {
-                CsvUtil.writeCsv(users, USERS_CSV_FILE);
-                return "Registration Approved Successfully";
-            } else {
-                return "User not found for Username: " + username;
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "Registration Approval Failed: " + e.getMessage();
-        }
-    }
-
-
-    private static String processGetHolidayRequests() {
-        try {
-            // Read holiday requests from CSV and convert to a string format
-            List<HolidayRequest> requests = CsvUtil.readCsv(HOLIDAY_REQUESTS_CSV_FILE, HolidayRequest.class);
-            return CsvUtil.convertListToCsvString(requests);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "Error: " + e.getMessage();
-        }
-    }
-
-    private static String processApproveHolidayRequest(int requestId) {
-        try {
-            List<HolidayRequest> requests = CsvUtil.readCsv(HOLIDAY_REQUESTS_CSV_FILE, HolidayRequest.class);
-            for (HolidayRequest request : requests) {
-                if (request.getRequestId() == requestId) {
-                    request.setStatus(Status.APPROVED);
-                    break;
-                }
-            }
-            CsvUtil.writeCsv(requests, HOLIDAY_REQUESTS_CSV_FILE);
-            return "Holiday Request Approved Successfully";
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "Holiday Request Approval Failed: " + e.getMessage();
-        }
-    }
-
-     */
     private static String processLoadTaskTrackingScreen() {
         // Add your logic here to determine if the task tracking screen can be loaded
         // For example, check user roles, permissions, etc.

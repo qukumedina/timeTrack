@@ -9,6 +9,8 @@ public class CsvUtil {
     private static final String USERS_CSV_FILE = "users.csv";
     private static final String Tasks_CSV_FILE = "tasks.csv";
 
+    private static final String TrackTime_CSV_FILE = "workinghours.csv";
+
     private static final String COMMA_DELIMITER = ",";
     private static int lastAssignedUserId = 0;
 
@@ -38,6 +40,17 @@ public class CsvUtil {
         }
     }
 
+    public static <T> void writeTrackTimeCsv(List<T> dataList, String TrackTime_CSV_FILE) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(TrackTime_CSV_FILE))) {
+            for (T data : dataList) {
+                writer.write(data.toString());
+                writer.write(NEW_LINE_SEPARATOR);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            // Handle the exception or throw a custom exception if needed
+        }
+    }
     // Read data from CSV file
     public static <T> List<T> readCsv(String fileName, Class<T> dataClass) {
         List<T> dataList = new ArrayList<>();
@@ -78,6 +91,26 @@ public class CsvUtil {
         return dataList;
     }
 
+    public static <T> List<T> readTrackTimeCsv(String fileName, Class<T> dataClass) {
+        List<T> dataList = new ArrayList<>();
+        try (BufferedReader reader = new BufferedReader
+                (new InputStreamReader(
+                        new FileInputStream(fileName),
+                        StandardCharsets.UTF_8))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                // The ID will be generated within the createDataInstance method.
+                T data = createTrackInstance(line, dataClass);
+                if (data != null) {
+                    dataList.add(data);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return dataList;
+    }
+
 
     // Convert a list of objects to a CSV-formatted string
     public static <T> String convertListToCsvString(List<T> dataList) {
@@ -90,6 +123,27 @@ public class CsvUtil {
     }
 
 
+    public static <T> T createTrackInstance(String line, Class<T> dataClass) {
+        String[] fields = line.split(COMMA_DELIMITER);
+        try {
+            if (fields.length==4 ) {
+                // Adjusted to the new format: username, password, role
+                String date = fields[0].trim();
+                String startTime = fields[1].trim();
+                String endTime = fields[2].trim();
+                String hoursDone = fields[3].trim();
+
+                // Create a new User instance with auto-generated ID
+                T data = dataClass.getDeclaredConstructor(String.class, String.class,String.class, String.class)
+                        .newInstance(date, startTime,endTime, hoursDone);
+
+                return data;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
     // Create an instance of the data class based on the CSV line
     // Assumes lastAssignedUserId is a static member of CsvUtil and managed there.

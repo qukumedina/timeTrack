@@ -85,6 +85,7 @@ package controller;
 
 import com.example.time.CsvUtil;
 import com.example.time.Role;
+import com.example.time.Task;
 import com.example.time.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -103,6 +104,7 @@ import java.io.InputStreamReader;
 import java.net.Socket;
 import java.util.List;
 import java.util.Objects;
+import java.util.Queue;
 
 public class UserRegistrationController {
 
@@ -114,6 +116,7 @@ public class UserRegistrationController {
 
     @FXML
     private ChoiceBox<Role> roleChoiceBox;
+
 
     @FXML
     private void registerUser() {
@@ -156,6 +159,8 @@ public class UserRegistrationController {
 
             // Print server response for debugging
             System.out.println("FROM SERVER: " + serverResponse);
+
+
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println("Error: " + e.getMessage());

@@ -1,5 +1,7 @@
 package com.example.time;
 
+import controller.LoginController;
+import controller.TaskTrackingController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -37,11 +39,35 @@ public class TCPClient extends Application {
         primaryStage.setScene(new Scene(loginRoot));
     }
 
+    public void loadEmployeeScreen(User loggedInUser) throws IOException {
+
+        Parent employeeScreen = FXMLLoader.load(getClass().getResource("/EmployeeScreen.fxml"));
+        primaryStage.setScene(new Scene(employeeScreen));
+    }
+
     // Method to load the Task Tracking screen
-    public void loadTaskTrackingScreen() throws IOException {
-        Parent taskTrackingRoot = FXMLLoader.load(getClass().getResource("/TaskTracking.fxml"));
+    public void loadTaskTrackingScreen(User loggedInUser) throws IOException {
+        FXMLLoader loader = new FXMLLoader(
+                getClass().getResource(
+                        "/TaskTracking.fxml"
+                )
+        );
+
+        Parent taskTrackingRoot = loader.load(getClass().getResource("/TaskTracking.fxml"));
+        TaskTrackingController controller = loader.getController();
+
+        if (controller != null)
+            controller.initData(loggedInUser);
+
         primaryStage.setScene(new Scene(taskTrackingRoot));
     }
+
+
+    public void loadWorkingHoursScreen(User loggedInUser) throws IOException {
+        Parent workingHrs = FXMLLoader.load(getClass().getResource("/WorkingHours.fxml"));
+        primaryStage.setScene(new Scene(workingHrs));
+    }
+
 
     // Method to load the Registration screen
     public void loadRegistrationScreen() throws IOException {
