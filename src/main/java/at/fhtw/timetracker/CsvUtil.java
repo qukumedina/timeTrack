@@ -37,7 +37,6 @@ public class CsvUtil {
             }
         } catch (IOException e) {
             e.printStackTrace();
-            // Handle the exception or throw a custom exception if needed
         }
     }
 
@@ -56,7 +55,6 @@ public class CsvUtil {
             }
         } catch (IOException e) {
             e.printStackTrace();
-            // Handle the exception or throw a custom exception if needed
         }
     }
 
@@ -75,7 +73,6 @@ public class CsvUtil {
             }
         } catch (IOException e) {
             e.printStackTrace();
-            // Handle the exception or throw a custom exception if needed
         }
     }
 
