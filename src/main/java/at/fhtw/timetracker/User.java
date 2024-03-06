@@ -1,4 +1,4 @@
-package com.example.time;
+package at.fhtw.timetracker;
 
 /**
  * The User class represents a user in the system with information such as username, password, role, and working hours.

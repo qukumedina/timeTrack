@@ -3,13 +3,12 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox alignment="CENTER" prefHeight="274.0" prefWidth="385.0" spacing="10" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.LoginController">
+<VBox alignment="CENTER" prefHeight="330.0" prefWidth="475.0" spacing="10" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.LoginController">
     <Label text="Login" />
-    <TextField fx:id="usernameField" promptText="Username" />
-    <PasswordField fx:id="passwordField" promptText="Password" />
-    <Button onAction="#login" text="Login" />
-    <Button onAction="#goToRegister" text="Register" />
-    <Button onAction="#goToManagerScreen" text="Go to Manager Screen" />
+    <TextField fx:id="usernameField" maxWidth="-Infinity" prefHeight="25.0" prefWidth="173.0" promptText="Username" />
+    <PasswordField fx:id="passwordField" maxWidth="-Infinity" prefHeight="25.0" prefWidth="173.0" promptText="Password" />
+    <Button maxWidth="-Infinity" onAction="#login" prefWidth="89.0" text="Login" />
+    <Button maxWidth="-Infinity" onAction="#goToRegister" prefWidth="89.0" text="Register" />
     <Button fx:id="managerScreenButton" onAction="#goToManagerScreen" text="Go to Manager Screen" visible="false" />
 
 

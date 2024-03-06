@@ -1,6 +1,6 @@
 package controller;
 
-import com.example.time.*;
+import at.fhtw.timetracker.*;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
@@ -592,7 +592,7 @@ private void approveSelectedRegistration() {
         // Assuming the server's response determines whether or not to proceed
         if (response.equals("Proceed to Task Tracking")) {
             try {
-                Main.getInstance().loadTaskTrackingScreen();
+                TCPClient.getInstance().loadTaskTrackingScreen();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -622,7 +622,7 @@ private void approveSelectedRegistration() {
      */
     @FXML
     private void handleApproveHolidayRequests() {
-        // TODO: Implement logic for approving holiday requests
+        // TODO
         System.out.println("Approving Holiday Requests");
     }
 }

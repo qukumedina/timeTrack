@@ -1,9 +1,8 @@
-package com.example.time;
+package at.fhtw.timetracker;
 
 import java.io.*;
 import java.net.*;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;

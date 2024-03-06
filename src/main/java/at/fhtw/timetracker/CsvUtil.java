@@ -1,8 +1,10 @@
 // CsvUtil.java
-package com.example.time;
+package at.fhtw.timetracker;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 /**
@@ -201,10 +203,10 @@ public class CsvUtil {
                 String hoursDone = fields[3].trim();
 
                 // Create a new User instance with auto-generated ID
-                T data = dataClass.getDeclaredConstructor(String.class, String.class,String.class, String.class)
-                        .newInstance(date, startTime,endTime, hoursDone);
 
-                return data;
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+                return dataClass.getDeclaredConstructor(LocalDate.class, String.class,String.class, String.class)
+                        .newInstance(LocalDate.parse(date, formatter), startTime,endTime, hoursDone);
             }
         } catch (Exception e) {
             e.printStackTrace();

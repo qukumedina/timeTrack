@@ -1,4 +1,4 @@
-package com.example.time;
+package at.fhtw.timetracker;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;

@@ -1,6 +1,5 @@
-package com.example.time;
+package at.fhtw.timetracker;
 
-import controller.LoginController;
 import controller.TaskTrackingController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -55,10 +54,9 @@ public class TCPClient extends Application {
     /**
      * Method to load the Employee screen.
      *
-     * @param loggedInUser The logged-in user
      * @throws IOException If an I/O error occurs
      */
-    public void loadEmployeeScreen(User loggedInUser) throws IOException {
+    public void loadEmployeeScreen() throws IOException {
 
         Parent employeeScreen = FXMLLoader.load(getClass().getResource("/EmployeeScreen.fxml"));
         primaryStage.setScene(new Scene(employeeScreen));
@@ -68,10 +66,9 @@ public class TCPClient extends Application {
     /**
      * Method to load the Task Tracking screen.
      *
-     * @param loggedInUser The logged-in user
      * @throws IOException If an I/O error occurs
      */
-    public void loadTaskTrackingScreen(User loggedInUser) throws IOException {
+    public void loadTaskTrackingScreen() throws IOException {
         FXMLLoader loader = new FXMLLoader(
                 getClass().getResource(
                         "/TaskTracking.fxml"
@@ -80,9 +77,6 @@ public class TCPClient extends Application {
 
         Parent taskTrackingRoot = loader.load(getClass().getResource("/TaskTracking.fxml"));
         TaskTrackingController controller = loader.getController();
-
-        if (controller != null)
-            controller.initData(loggedInUser);
 
         primaryStage.setScene(new Scene(taskTrackingRoot));
     }

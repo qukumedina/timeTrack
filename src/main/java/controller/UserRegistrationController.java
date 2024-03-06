@@ -1,10 +1,7 @@
 package controller;
 
 
-import com.example.time.CsvUtil;
-import com.example.time.Role;
-import com.example.time.Task;
-import com.example.time.User;
+import at.fhtw.timetracker.Role;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -20,9 +17,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
-import java.util.List;
 import java.util.Objects;
-import java.util.Queue;
 
 /**
  * Controller class for user registration functionality.

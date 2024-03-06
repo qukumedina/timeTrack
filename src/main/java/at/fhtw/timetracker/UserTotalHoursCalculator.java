@@ -1,4 +1,4 @@
-package com.example.time;
+package at.fhtw.timetracker;
 
 import java.util.List;
 import java.util.concurrent.ExecutorService;

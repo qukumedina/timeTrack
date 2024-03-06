@@ -1,4 +1,4 @@
-package com.example.time;
+package at.fhtw.timetracker;
 
 /**
  * The Role enum represents the role of a user.

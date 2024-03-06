@@ -3,11 +3,12 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox alignment="CENTER" prefHeight="246.0" prefWidth="386.0" spacing="10" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.TaskTrackingController">
+<VBox alignment="CENTER" prefHeight="330.0" prefWidth="475.0" spacing="10" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.TaskTrackingController">
     <Label id="tiltle" text="Task Tracking" />
-    <TextField fx:id="taskIDField" promptText="Task Id" />
+    <TextField fx:id="taskIDField" maxWidth="-Infinity" prefHeight="25.0" prefWidth="173.0" promptText="Task Nr" />
 
-    <TextField fx:id="taskNameField" promptText="Task Name" />
-    <TextField fx:id="timeSpentField" promptText="Time Spent (hours)" />
-    <Button onAction="#trackTask" text="Track Task" />
+    <TextField fx:id="taskNameField" maxWidth="-Infinity" prefHeight="25.0" prefWidth="173.0" promptText="Task Name" />
+    <TextField fx:id="timeSpentField" maxWidth="-Infinity" prefHeight="25.0" prefWidth="173.0" promptText="Time Spent (hours)" />
+    <Button onAction="#trackTask" prefHeight="25.0" prefWidth="89.0" text="TRACK TASK" />
+   <Button accessibleRoleDescription="goBack" layoutX="203.0" layoutY="229.0" onAction="#goBack" prefHeight="25.0" prefWidth="89.0" text="GO BACK" />
 </VBox>

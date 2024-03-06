@@ -1,4 +1,4 @@
-package com.example.time;
+package at.fhtw.timetracker;
 
 /**
  * The Status enum represents the status of a holiday request.

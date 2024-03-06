@@ -1,9 +1,7 @@
 package controller;
 
-import com.example.time.TCPClient;
-import com.example.time.User;
+import at.fhtw.timetracker.TCPClient;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 
@@ -12,7 +10,6 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -41,7 +38,7 @@ public class WorkingHoursController {
         LocalDate date = dateTrackField.getValue();
         String startTime = startTimeField.getText();
         String endTime = endTimeField.getText();
-        String hoursDone = calculateHours (startTime, endTime);
+        String hoursDone;
 
         if (date == null || startTime.isEmpty() || endTime.isEmpty()) {
             // Handle validation or display an error message
@@ -50,7 +47,7 @@ public class WorkingHoursController {
 
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
             String formattedString = date.format(formatter);
-
+            hoursDone = calculateHours (startTime, endTime);
             String response = sendWorkingHoursToServer(formattedString, startTime, endTime, hoursDone);
         }
     }
@@ -73,14 +70,16 @@ public class WorkingHoursController {
             e.printStackTrace();
         }
 
-        long differenceInMillis = end.getTime() - start.getTime();
 
-        // Calculate hours and minutes
-        long hours = differenceInMillis / (60 * 60 * 1000);
-        long minutes = (differenceInMillis / (60 * 1000)) % 60;
+            long differenceInMillis = end.getTime() - start.getTime();
 
-        String hoursCalc = String.format("%02d:%02d", hours, minutes);
-        System.out.println("Hours Done: " + hoursCalc);
+            // Calculate hours and minutes
+            long hours = differenceInMillis / (60 * 60 * 1000);
+            long minutes = (differenceInMillis / (60 * 1000)) % 60;
+
+           String hoursCalc = String.format("%02d:%02d", hours, minutes);
+            System.out.println("Hours Done: " + hoursCalc);
+
         return hoursCalc;
     }
 
@@ -116,13 +115,15 @@ public class WorkingHoursController {
 
 
     /**
-     * Initializes data for the controller.
-     * Currently not used, but can be implemented to pass the logged-in user's information.
-     *
-     * @param loggedInUser The logged-in user object.
+     * Handles the action when the user clicks the button to navigate to the registration screen.
+     * Loads the registration screen.
      */
-    public void initData(User loggedInUser) {
-        //this.loggedInUser = loggedInUser;
-        //title.setText("Task Tracking for user: " + loggedInUser.getUsername());
+    @FXML
+    private void goBack() {
+        try {
+            TCPClient.getInstance().loadEmployeeScreen();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

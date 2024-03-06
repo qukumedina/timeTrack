@@ -1,10 +1,10 @@
 package controller;
 
 
-import com.example.time.CsvUtil;
-import com.example.time.HolidayRequest;
-import com.example.time.Status;
-import com.example.time.User;
+import at.fhtw.timetracker.CsvUtil;
+import at.fhtw.timetracker.HolidayRequest;
+import at.fhtw.timetracker.Status;
+import at.fhtw.timetracker.User;
 import javafx.fxml.FXML;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
@@ -69,9 +69,8 @@ public class HolidayRequestController {
                         Status.PENDING
                 );
                 saveHolidayRequest(newRequest);
-                // ... rest of your logic ...
             } else {
-                // Handle case where requested days exceed available holidays
+                //nothing happens
             }
         }
     }

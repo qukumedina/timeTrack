@@ -1,4 +1,4 @@
-package com.example.time;
+package at.fhtw.timetracker;
 
 /**
  * The Task class represents a task assigned to an employee.

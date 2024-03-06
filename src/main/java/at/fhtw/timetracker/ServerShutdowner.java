@@ -1,4 +1,4 @@
-package com.example.time;
+package at.fhtw.timetracker;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;

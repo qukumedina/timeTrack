@@ -13,7 +13,7 @@ This project aims to create an efficient platform for tracking work hours and lo
 2. Open the project in your preferred Java IDE(please select maven and correto-17).
 3. Run the Server application file (`TCPServer.java`) to start the connection.
 4. Proceed by running the Client application file (`TCPClient.java`) to open the client view.
-5. To make sure each new entry(from registration of a new user, task, or working hours) is saved run the shutdown server file (`ServerShutdowner.java`) and each .csv file should be updated successfully.
+5. When you are done using the application, to make sure each new entry(from registration of a new user, task, or working hours) is saved run the shutdown server file (`ServerShutdowner.java`) and each .csv file should be updated successfully.
 6. When running the `ServerShutdowner.java` you must type "shutdown" on the terminal.
 
 ## Key Classes and Functions

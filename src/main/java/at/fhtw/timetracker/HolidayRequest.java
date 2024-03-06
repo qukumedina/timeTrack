@@ -1,4 +1,4 @@
-package com.example.time;
+package at.fhtw.timetracker;
 
 import java.time.LocalDate;
 import java.util.List;

@@ -1,21 +1,12 @@
 // LoginController.java
 package controller;
 
-import com.example.time.CsvUtil;
-import com.example.time.Role;
-import com.example.time.TCPClient;
-import com.example.time.User;
+import at.fhtw.timetracker.TCPClient;
+import at.fhtw.timetracker.User;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
 
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.Socket;
-import java.util.List;
 
 /**
  * Controller class for the employee screen.
@@ -25,7 +16,6 @@ public class EmployeeScreenController {
 
     @FXML
     private Button trackTaskButton;
-
     @FXML
     private Button trackTimeButton;
     private User loggedInUser;
@@ -48,17 +38,23 @@ public class EmployeeScreenController {
     @FXML
     private void goTaskTrack() {
         try {
-            TCPClient.getInstance().loadTaskTrackingScreen(loggedInUser);
+            TCPClient.getInstance().loadTaskTrackingScreen();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     /**
-     * Initializes the controller with the logged-in user.
-     * @param loggedInUser The logged-in user.
+     * Handles the action when the user clicks the button to navigate to the registration screen.
+     * Loads the registration screen.
      */
-    public void initData(User loggedInUser) {
-        this.loggedInUser = loggedInUser;
+    @FXML
+    private void goBack() {
+        try {
+            TCPClient.getInstance().loadLoginScreen();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
+
 }

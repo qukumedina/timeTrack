@@ -4,5 +4,5 @@ module com.example.time {
 
     opens controller to javafx.fxml; // Add this line
 
-    exports com.example.time;
+    exports at.fhtw.timetracker;
 }

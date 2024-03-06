@@ -1,6 +1,9 @@
 package controller;
 
-import com.example.time.*;
+import at.fhtw.timetracker.CsvUtil;
+import at.fhtw.timetracker.Role;
+import at.fhtw.timetracker.TCPClient;
+import at.fhtw.timetracker.User;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
@@ -121,7 +124,7 @@ public class LoginController {
      */
     private void loadEmployeeScreen() {
         try {
-            TCPClient.getInstance().loadEmployeeScreen(loggedInUser);
+            TCPClient.getInstance().loadEmployeeScreen();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -139,7 +142,7 @@ public class LoginController {
     }
     private void loadTaskTrackingScreen() {
         try {
-            TCPClient.getInstance().loadTaskTrackingScreen(loggedInUser);
+            TCPClient.getInstance().loadTaskTrackingScreen();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -205,13 +208,5 @@ public class LoginController {
         }
     }
 
-    /**
-     * Initializes the data for the controller.
-     * Sets the list of users.
-     * @param users The list of users.
-     */
-    public void initData(Queue<User> users) {
-        this.userList = users;
-    }
 
 }

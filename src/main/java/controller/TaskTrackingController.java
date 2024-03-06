@@ -1,19 +1,13 @@
 package controller;
-
-import com.example.time.CsvUtil;
-import com.example.time.Role;
-import com.example.time.Task;
-import com.example.time.User;
+import at.fhtw.timetracker.TCPClient;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
-import javafx.scene.text.Text;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
-import java.util.List;
 
 /**
  * The TaskTrackingController class is responsible for handling task tracking functionality.
@@ -22,16 +16,12 @@ import java.util.List;
  */
 public class TaskTrackingController {
 
-    private User loggedInUser;
-
     @FXML
     private TextField taskNameField;
     @FXML
     private TextField taskIDField;
     @FXML
     private TextField timeSpentField;
-    @FXML
-    private Text title;
 
     /**
      * Handles the action when the user tracks a task.
@@ -42,11 +32,17 @@ public class TaskTrackingController {
     @FXML
     private void trackTask() {
         // Add logic to handle task tracking
-        String taskName = taskNameField.getText();
+        String description = taskNameField.getText();
         String timeSpentInput = timeSpentField.getText();
-        int taskId = Integer.parseInt(taskIDField.getText());
-        String description = taskName; // Use a default description or add a new UI field
-        if (!taskName.isEmpty() && !timeSpentInput.isEmpty() && taskId == 0) {
+        int taskId;
+        try {
+            taskId = Integer.parseInt(taskIDField.getText());
+        } catch (NumberFormatException ex) {
+            System.out.println("Please fill in all fields");
+            return;
+        }
+
+        if (description.isEmpty() || timeSpentInput.isEmpty()) {
             // Handle validation or display an error message
             System.out.println("Please fill in all fields");
             return;
@@ -81,11 +77,10 @@ public class TaskTrackingController {
                 }
             }
         } catch (NumberFormatException e) {
-            // Handle invalid input gracefully (e.g., provide a default value)
+            e.printStackTrace();
         }
         return numericValue;
     }
-    int assignedRole = 1; // Use 1 to represent EMPLOYEE
 
     /**
      * Saves the tracked task to a CSV file.
@@ -96,30 +91,8 @@ public class TaskTrackingController {
      * @param taskId       The ID of the task.
      * @param description  The description of the task.
      * @param timeSpent    The time spent on the task.
-     * @param assignedRole The role assigned to the user for this task.
      */
-    private void saveTaskToCsv(int taskId, String description, int timeSpent, String assignedRole) {
-        Role role;
-        if ("EMPLOYEE".equals(assignedRole)) {
-            role = Role.EMPLOYEE;
-        } else if ("MANAGER".equals(assignedRole)) {
-            role = Role.MANAGER;
-        } else {
-            // Handle the case where the role input is not recognized
-            throw new IllegalArgumentException("Invalid role: " + assignedRole);
-        }
 
-        Task task = new Task(taskId, description, timeSpent, role);
-
-        // Read existing tasks from CSV file
-        List<Task> taskList = CsvUtil.readTaskCsv("tasks.csv", Task.class);
-
-        // Add the new task to the list
-        taskList.add(task);
-
-        // Write the updated task list back to the CSV file
-        CsvUtil.writeTaskCsv(taskList, "tasks.csv");
-    }
     private String sendRegistrationReqToServerTask(int taskId, String description, int timeSpent){
         String serverResponseTrack = "";
         try (Socket clientSocket = new Socket("localhost", 6789)) {
@@ -141,14 +114,13 @@ public class TaskTrackingController {
         return serverResponseTrack;
     }
 
-    /**
-     * Initializes the controller with the logged-in user's information.
-     *
-     * @param loggedInUser The logged-in user for whom the task tracking is being done.
-     */
-    public void initData(User loggedInUser) {
-        this.loggedInUser = loggedInUser;
-        if (loggedInUser != null)
-            title.setText("Task Tracking for user: " + loggedInUser.getUsername());
+    @FXML
+    private void goBack() {
+        try {
+            TCPClient.getInstance().loadEmployeeScreen();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
+
 }
